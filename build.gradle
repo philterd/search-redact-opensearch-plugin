@@ -42,7 +42,7 @@ configurations.all {
 }
 
 ext {
-    phileasVersion = '4.1.0'
+    phileasVersion = '4.2.0'
 }
 
 buildscript {
@@ -69,7 +69,7 @@ dependencies {
 
     // Phileas 4.x is a single artifact whose runtime dependencies do not resolve transitively
     // for consumers, so they are declared explicitly here (versions match the phileas POM).
-    implementation 'ai.philterd:phisql:1.1.0'
+    implementation 'ai.philterd:phisql:1.2.0'
     implementation 'com.networknt:json-schema-validator:1.5.5'
     implementation 'com.googlecode.libphonenumber:libphonenumber:9.0.31'
     implementation 'org.apache.httpcomponents.client5:httpclient5:5.6.1'

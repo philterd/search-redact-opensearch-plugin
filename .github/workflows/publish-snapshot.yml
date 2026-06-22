@@ -16,8 +16,16 @@ jobs:
         with:
           java-version: 21
           distribution: temurin
-      - name: Build and publish snapshot
-        run: ./gradlew build publishPluginZipPublicationToCentralSnapshotsRepository
+      - name: Build
+        run: ./gradlew build
+      - name: Resolve the project version
+        id: version
+        run: echo "version=$(./gradlew properties -q --console=plain | awk '/^version:/ {print $2}')" >> "$GITHUB_OUTPUT"
+      - name: Publish snapshot
+        # Only publish when the resolved version is a snapshot; a release version
+        # must never be pushed into the snapshot channel. Skip cleanly otherwise.
+        if: endsWith(steps.version.outputs.version, '-SNAPSHOT')
+        run: ./gradlew publishPluginZipPublicationToCentralSnapshotsRepository
         env:
           MAVEN_CENTRAL_USERNAME: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
           MAVEN_CENTRAL_PASSWORD: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
