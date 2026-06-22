@@ -117,14 +117,15 @@ publishing {
     }
     repositories {
         // Snapshots are published to the Central Portal snapshot repository. Releases are not
-        // handled here. Credentials come from the CENTRAL_USERNAME / CENTRAL_PASSWORD environment
-        // variables (a Central Portal user token), supplied by CI.
+        // handled here. Credentials come from the MAVEN_CENTRAL_USERNAME / MAVEN_CENTRAL_PASSWORD
+        // environment variables (a Central Portal user token), supplied by CI. These match the
+        // secret names used by the other Philterd Java projects (e.g. Phileas).
         maven {
             name = "centralSnapshots"
             url = "https://central.sonatype.com/repository/maven-snapshots/"
             credentials {
-                username = System.getenv("CENTRAL_USERNAME")
-                password = System.getenv("CENTRAL_PASSWORD")
+                username = System.getenv("MAVEN_CENTRAL_USERNAME")
+                password = System.getenv("MAVEN_CENTRAL_PASSWORD")
             }
         }
     }
