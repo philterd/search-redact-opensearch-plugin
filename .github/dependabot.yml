@@ -14,3 +14,10 @@ updates:
     labels:
       - "dependabot"
       - "dependencies"
+    # This is an OpenSearch plugin: the Gradle version is dictated by
+    # org.opensearch.gradle:build-tools, not a free choice. Letting Dependabot bump the
+    # wrapper independently creates churn and risks a Gradle version newer than build-tools
+    # supports (a hard build failure). Bump the wrapper deliberately, in lockstep with the
+    # build-tools version, instead.
+    ignore:
+      - dependency-name: "gradle-wrapper"
