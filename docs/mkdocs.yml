@@ -1,0 +1,17 @@
+site_name: Search Redact for OpenSearch
+repo_url: https://github.com/philterd/search-redact-opensearch-plugin
+site_url: https://philterd.github.io/search-redact-opensearch-plugin/
+edit_uri: '?query=docs/docs/'
+copyright: Copyright 2026 Philterd, LLC
+site_author: philterd
+site_description: User guide for the Search Redact plugin for OpenSearch, an open source plugin that redacts PII and PHI from search results.
+theme:
+  name: material
+  locale: en
+  palette:
+    primary: red
+nav:
+  - Home: index.md
+  - Installation: installation.md
+  - Usage: usage.md
+  - Configuration: configuration.md
