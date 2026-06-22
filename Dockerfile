@@ -1,6 +1,6 @@
 FROM opensearchproject/opensearch:3.7.0
 
-ARG VERSION="3.7.0-SNAPSHOT"
+ARG VERSION="3.7.0.1-SNAPSHOT"
 
 COPY ./build/distributions/search-redact-${VERSION}.zip /tmp/
 

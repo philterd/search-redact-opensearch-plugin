@@ -5,9 +5,12 @@ apply plugin: 'opensearch.yaml-rest-test'
 apply plugin: 'opensearch.pluginzip'
 
 group = "ai.philterd"
-// Track the OpenSearch version this plugin is built for (opensearch_version, set in the
-// buildscript block below). The plugin version is that version plus a -SNAPSHOT suffix.
-version = "${opensearch_version}-SNAPSHOT"
+// The plugin version is the OpenSearch version it targets (opensearch_version, set in the
+// buildscript block below) plus an independent plugin revision, so multiple plugin releases can
+// ship against the same OpenSearch version. Released revisions are tagged X.Y.Z.<rev>; bump
+// pluginRevision on main after a release so main carries the next -SNAPSHOT.
+def pluginRevision = "1"
+version = "${opensearch_version}.${pluginRevision}-SNAPSHOT"
 
 opensearchplugin {
     name 'search-redact'
