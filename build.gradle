@@ -5,7 +5,9 @@ apply plugin: 'opensearch.yaml-rest-test'
 apply plugin: 'opensearch.pluginzip'
 
 group = "ai.philterd"
-version = "3.2.0-SNAPSHOT"
+// Track the OpenSearch version this plugin is built for (opensearch_version, set in the
+// buildscript block below). The plugin version is that version plus a -SNAPSHOT suffix.
+version = "${opensearch_version}-SNAPSHOT"
 
 opensearchplugin {
     name 'search-redact'
@@ -26,14 +28,24 @@ java {
     sourceCompatibility = JavaVersion.VERSION_21
 }
 
+// OpenSearch's build-tools and our Phileas dependencies pull conflicting versions of a few
+// compile-time/shared libraries. Pin one version of each so resolution succeeds; the plugin
+// loads its own bundled jars at runtime under its isolated classloader.
+configurations.all {
+    resolutionStrategy {
+        force 'com.google.errorprone:error_prone_annotations:2.45.0'
+        force 'commons-codec:commons-codec:1.22.0'
+    }
+}
+
 ext {
-    phileasVersion = '2.12.3'
+    phileasVersion = '4.1.0'
 }
 
 buildscript {
 
     ext {
-        opensearch_version = System.getProperty("opensearch.version", "3.4.0")
+        opensearch_version = System.getProperty("opensearch.version", "3.7.0")
     }
 
     repositories {
@@ -50,14 +62,24 @@ buildscript {
 }
 
 dependencies {
-    implementation("ai.philterd:phileas-core:$phileasVersion")
-    implementation("ai.philterd:phileas-model:$phileasVersion")
-    implementation("ai.philterd:phileas-services-policies:$phileasVersion")
-    implementation("ai.philterd:phileas-services-anonymization:$phileasVersion")
-    implementation("ai.philterd:phileas-services-alerts:$phileasVersion")
-    implementation("ai.philterd:phileas-processors-unstructured:$phileasVersion")
-    implementation("ai.philterd:phileas-services-disambiguation:$phileasVersion")
-    implementation("ai.philterd:phileas-services-split:$phileasVersion")
+    implementation("ai.philterd:phileas:$phileasVersion")
+
+    // Phileas 4.x is a single artifact whose runtime dependencies do not resolve transitively
+    // for consumers, so they are declared explicitly here (versions match the phileas POM).
+    implementation 'ai.philterd:phisql:1.1.0'
+    implementation 'com.networknt:json-schema-validator:1.5.5'
+    implementation 'com.googlecode.libphonenumber:libphonenumber:9.0.31'
+    implementation 'org.apache.httpcomponents.client5:httpclient5:5.6.1'
+    implementation 'org.apache.httpcomponents.core5:httpcore5:5.4'
+    implementation 'commons-collections:commons-collections:3.2.2'
+    implementation 'org.antlr:antlr4-runtime:4.13.2'
+    implementation 'commons-validator:commons-validator:1.10.1'
+    implementation 'commons-codec:commons-codec:1.22.0'
+    implementation 'org.apache.pdfbox:pdfbox:3.0.7'
+    implementation 'org.apache.pdfbox:pdfbox-io:3.0.7'
+    implementation 'org.apache.commons:commons-text:1.15.0'
+    implementation 'commons-io:commons-io:2.22.0'
+    implementation 'io.github.mysto:ff3:1.2.0'
 
     implementation 'com.google.code.gson:gson:2.14.0'
     implementation 'org.apache.commons:commons-lang3:3.20.0'

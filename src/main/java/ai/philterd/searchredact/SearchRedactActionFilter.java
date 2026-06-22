@@ -15,12 +15,12 @@
  */
 package ai.philterd.searchredact;
 
-import ai.philterd.phileas.model.enums.MimeType;
-import ai.philterd.phileas.model.policy.Policy;
-import ai.philterd.phileas.model.responses.FilterResponse;
-import ai.philterd.phileas.services.PhileasFilterService;
+import ai.philterd.phileas.model.filtering.TextFilterResult;
+import ai.philterd.phileas.policy.Policy;
+import ai.philterd.phileas.services.filters.filtering.PlainTextFilterService;
 import ai.philterd.searchredact.ext.SearchRedactParameters;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.opensearch.action.ActionRequest;
@@ -41,10 +41,10 @@ public class SearchRedactActionFilter implements ActionFilter {
 
     private static final Logger LOGGER = LogManager.getLogger(SearchRedactActionFilter.class);
 
-    private final PhileasFilterService phileasFilterService;
+    private final PlainTextFilterService filterService;
 
-    public SearchRedactActionFilter(final PhileasFilterService phileasFilterService) {
-        this.phileasFilterService = phileasFilterService;
+    public SearchRedactActionFilter(final PlainTextFilterService filterService) {
+        this.filterService = filterService;
     }
 
     @Override
@@ -112,29 +112,36 @@ public class SearchRedactActionFilter implements ActionFilter {
                 // LOGGER.info("policy = {}, context = {}, field = {}", policyJson, context, fieldName);
 
                 final ObjectMapper objectMapper = new ObjectMapper();
-                final Policy policy = objectMapper.readValue(policyJson, Policy.class);
+                final Policy policy = new Gson().fromJson(policyJson, Policy.class);
+                final String redactionContext = context != null ? context : "search-redact";
 
                 for (final SearchHit hit : ((SearchResponse) response).getHits().getHits()) {
 
-                    for(final String field : fields) {
+                    // Read the source once per hit, redact every requested field, then write it back
+                    // a single time. (Elasticsearch asserts getSourceAsMap() is called only once.)
+                    final Map<String, Object> sourceMap = hit.getSourceAsMap();
+                    boolean modified = false;
 
-                        if (hit.getSourceAsMap().containsKey(field)) {
+                    for (final String field : fields) {
+
+                        if (sourceMap.containsKey(field)) {
 
                             // Look for PII by applying the policy to the selected field.
-                            final String input = hit.getSourceAsMap().get(field).toString();
+                            final String input = sourceMap.get(field).toString();
 
-                            final FilterResponse filterResponse = phileasFilterService.filter(policy, context, hit.getId(), input, MimeType.TEXT_PLAIN);
+                            final TextFilterResult filterResult = filterService.filter(policy, redactionContext, input);
 
-                            final Map<String, Object> sourceMap = hit.getSourceAsMap();
-                            sourceMap.put(field, filterResponse.getFilteredText());
-
-                            final Map<String, Object> map = new HashMap<>(sourceMap);
-                            hit.sourceRef(new BytesArray(objectMapper.writeValueAsBytes(map)));
+                            sourceMap.put(field, filterResult.getFilteredText());
+                            modified = true;
 
                         } else {
                             LOGGER.warn("Search request wanted field {} to be redacted but field was not found.", field);
                         }
 
+                    }
+
+                    if (modified) {
+                        hit.sourceRef(new BytesArray(objectMapper.writeValueAsBytes(sourceMap)));
                     }
 
                 }

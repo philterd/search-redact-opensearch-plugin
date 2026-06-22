@@ -1,0 +1,26 @@
+"Redacts an SSN from search results":
+
+  - do:
+      indices.create:
+        index: redact_test
+
+  - do:
+      index:
+        index: redact_test
+        id: "1"
+        refresh: true
+        body:
+          description: "My SSN is 123-45-6789"
+
+  - do:
+      search:
+        index: redact_test
+        body:
+          query:
+            match_all: {}
+          ext:
+            search-redact:
+              field: "description"
+              policy: '{"identifiers":{"ssn":{"ssnFilterStrategies":[{"strategy":"REDACT","redactionFormat":"***"}]}}}'
+
+  - match: { hits.hits.0._source.description: "My SSN is ***" }

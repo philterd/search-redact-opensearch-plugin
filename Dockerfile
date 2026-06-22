@@ -1,7 +1,7 @@
-FROM opensearchstaging/opensearch:2.18.0
+FROM opensearchproject/opensearch:3.7.0
 
-ARG VERSION="1.0.0-SNAPSHOT"
+ARG VERSION="3.7.0-SNAPSHOT"
 
-COPY ./build/distributions/phinder-${VERSION}.zip /tmp/
+COPY ./build/distributions/search-redact-${VERSION}.zip /tmp/
 
-RUN /usr/share/opensearch/bin/opensearch-plugin install --batch file:/tmp/phinder-${VERSION}.zip
+RUN /usr/share/opensearch/bin/opensearch-plugin install --batch file:/tmp/search-redact-${VERSION}.zip
