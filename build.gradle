@@ -83,7 +83,8 @@ repositories {
 publishing {
     publications {
         pluginZip(MavenPublication) { publication ->
-            artifact bundlePlugin
+            // The opensearch.pluginzip plugin already adds the plugin zip as this publication's
+            // artifact, so we only customize the POM here (adding it again is a duplicate artifact).
             pom {
                 name = "search-redact-opensearch-plugin"
                 description = "An OpenSearch plugin to redact PII from search results"
@@ -111,6 +112,19 @@ publishing {
             pom {
                 name = "search-redact-opensearch-plugin"
                 description = "An OpenSearch plugin to redact PII from search results"
+            }
+        }
+    }
+    repositories {
+        // Snapshots are published to the Central Portal snapshot repository. Releases are not
+        // handled here. Credentials come from the CENTRAL_USERNAME / CENTRAL_PASSWORD environment
+        // variables (a Central Portal user token), supplied by CI.
+        maven {
+            name = "centralSnapshots"
+            url = "https://central.sonatype.com/repository/maven-snapshots/"
+            credentials {
+                username = System.getenv("CENTRAL_USERNAME")
+                password = System.getenv("CENTRAL_PASSWORD")
             }
         }
     }
