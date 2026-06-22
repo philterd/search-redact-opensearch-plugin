@@ -45,7 +45,7 @@ import java.util.function.Supplier;
 
 import static java.util.Collections.singletonList;
 
-public class SearchRedactPlugin extends Plugin implements ActionPlugin, SearchPlugin {
+public class OpenSearchRedactPlugin extends Plugin implements ActionPlugin, SearchPlugin {
 
     private Client client;
 
