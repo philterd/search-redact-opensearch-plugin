@@ -1,8 +1,8 @@
 services:
 
-  phinder:
+  search-redact:
     build: ./
-    container_name: phinder 
+    container_name: search-redact 
     environment:
       discovery.type: single-node
       node.name: opensearch
@@ -23,8 +23,8 @@ services:
       - 9200
       - 9600
     networks:
-      - phinder-net
+      - search-redact-net
 
 networks:
-  phinder-net:
+  search-redact-net:
     driver: bridge

@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ai.philterd.phinder;
+package ai.philterd.searchredact;
 
 import org.opensearch.test.OpenSearchTestCase;
 
-public class PhinderTests extends OpenSearchTestCase {
+public class SearchRedactTests extends OpenSearchTestCase {
 
     public void testSample() {
 

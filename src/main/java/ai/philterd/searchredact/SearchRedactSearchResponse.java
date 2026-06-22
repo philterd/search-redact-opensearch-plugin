@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ai.philterd.phinder;
+package ai.philterd.searchredact;
 
-import ai.philterd.phinder.ext.PhinderParametersExtBuilder;
+import ai.philterd.searchredact.ext.SearchRedactParametersExtBuilder;
 import org.opensearch.action.search.SearchResponse;
 import org.opensearch.action.search.SearchResponseSections;
 import org.opensearch.action.search.ShardSearchFailure;
@@ -24,15 +24,15 @@ import org.opensearch.core.xcontent.XContentBuilder;
 
 import java.io.IOException;
 
-public class PhinderSearchResponse extends SearchResponse {
+public class SearchRedactSearchResponse extends SearchResponse {
 
     private static final String EXT_SECTION_NAME = "ext";
-    private static final String PHINDER_POLICY_NAME = "policy";
+    private static final String SEARCH_REDACT_POLICY_NAME = "policy";
 
     private final String policy;
 
     /**
-     * Creates a new Phinder search response.
+     * Creates a new SearchRedact search response.
      *
      * @param internalResponse The internal response.
      * @param scrollId         The scroll ID.
@@ -44,7 +44,7 @@ public class PhinderSearchResponse extends SearchResponse {
      * @param clusters         The {@link Clusters}.
      * @param policy           The policy.
      */
-    public PhinderSearchResponse(
+    public SearchRedactSearchResponse(
             SearchResponseSections internalResponse,
             String scrollId,
             int totalShards,
@@ -66,8 +66,8 @@ public class PhinderSearchResponse extends SearchResponse {
         innerToXContent(builder, params);
 
         builder.startObject(EXT_SECTION_NAME);
-        builder.startObject(PhinderParametersExtBuilder.PHINDER_PARAMETERS_NAME);
-        builder.field(PHINDER_POLICY_NAME, this.policy);
+        builder.startObject(SearchRedactParametersExtBuilder.SEARCH_REDACT_PARAMETERS_NAME);
+        builder.field(SEARCH_REDACT_POLICY_NAME, this.policy);
         builder.endObject();
         builder.endObject();
         builder.endObject();

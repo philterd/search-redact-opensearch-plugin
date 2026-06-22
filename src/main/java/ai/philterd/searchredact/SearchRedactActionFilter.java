@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ai.philterd.phinder;
+package ai.philterd.searchredact;
 
 import ai.philterd.phileas.model.enums.MimeType;
 import ai.philterd.phileas.model.policy.Policy;
 import ai.philterd.phileas.model.responses.FilterResponse;
 import ai.philterd.phileas.services.PhileasFilterService;
-import ai.philterd.phinder.ext.PhinderParameters;
+import ai.philterd.searchredact.ext.SearchRedactParameters;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -37,13 +37,13 @@ import org.opensearch.tasks.Task;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PhinderActionFilter implements ActionFilter {
+public class SearchRedactActionFilter implements ActionFilter {
 
-    private static final Logger LOGGER = LogManager.getLogger(PhinderActionFilter.class);
+    private static final Logger LOGGER = LogManager.getLogger(SearchRedactActionFilter.class);
 
     private final PhileasFilterService phileasFilterService;
 
-    public PhinderActionFilter(final PhileasFilterService phileasFilterService) {
+    public SearchRedactActionFilter(final PhileasFilterService phileasFilterService) {
         this.phileasFilterService = phileasFilterService;
     }
 
@@ -100,13 +100,13 @@ public class PhinderActionFilter implements ActionFilter {
 
         if (response instanceof SearchResponse) {
 
-            final PhinderParameters phinderParameters = PhinderParameters.getPhinderParameters(searchRequest);
+            final SearchRedactParameters searchRedactParameters = SearchRedactParameters.getSearchRedactParameters(searchRequest);
 
-            if (phinderParameters != null) {
+            if (searchRedactParameters != null) {
 
-                final String policyJson = phinderParameters.getPolicy();
-                final String context = phinderParameters.getContext();
-                final String fieldName = phinderParameters.getFieldName();
+                final String policyJson = searchRedactParameters.getPolicy();
+                final String context = searchRedactParameters.getContext();
+                final String fieldName = searchRedactParameters.getFieldName();
                 final String[] fields = fieldName.split(",");
 
                 // LOGGER.info("policy = {}, context = {}, field = {}", policyJson, context, fieldName);

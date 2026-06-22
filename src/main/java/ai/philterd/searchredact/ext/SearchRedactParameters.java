@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ai.philterd.phinder.ext;
+package ai.philterd.searchredact.ext;
 
 import org.opensearch.action.search.SearchRequest;
 import org.opensearch.core.ParseField;
@@ -31,39 +31,39 @@ import java.util.Objects;
 import java.util.Optional;
 
 /**
- * The Phinder parameters available in the ext.
+ * The SearchRedact parameters available in the ext.
  */
-public class PhinderParameters implements Writeable, ToXContentObject {
+public class SearchRedactParameters implements Writeable, ToXContentObject {
 
-    private static final ObjectParser<PhinderParameters, Void> PARSER;
+    private static final ObjectParser<SearchRedactParameters, Void> PARSER;
     private static final ParseField POLICY = new ParseField("policy");
     private static final ParseField CONTEXT = new ParseField("context");
     private static final ParseField FIELD_NAME = new ParseField("field");
 
     static {
-        PARSER = new ObjectParser<>(PhinderParametersExtBuilder.PHINDER_PARAMETERS_NAME, PhinderParameters::new);
-        PARSER.declareString(PhinderParameters::setPolicy, POLICY);
-        PARSER.declareString(PhinderParameters::setContext, CONTEXT);
-        PARSER.declareString(PhinderParameters::setFieldName, FIELD_NAME);
+        PARSER = new ObjectParser<>(SearchRedactParametersExtBuilder.SEARCH_REDACT_PARAMETERS_NAME, SearchRedactParameters::new);
+        PARSER.declareString(SearchRedactParameters::setPolicy, POLICY);
+        PARSER.declareString(SearchRedactParameters::setContext, CONTEXT);
+        PARSER.declareString(SearchRedactParameters::setFieldName, FIELD_NAME);
     }
 
     /**
-     * Get the {@link PhinderParameters} from a {@link SearchRequest}.
+     * Get the {@link SearchRedactParameters} from a {@link SearchRequest}.
      * @param request A {@link SearchRequest},
-     * @return The Phinder {@link PhinderParameters parameters}.
+     * @return The SearchRedact {@link SearchRedactParameters parameters}.
      */
-    public static PhinderParameters getPhinderParameters(final SearchRequest request) {
+    public static SearchRedactParameters getSearchRedactParameters(final SearchRequest request) {
 
-        PhinderParametersExtBuilder builder = null;
+        SearchRedactParametersExtBuilder builder = null;
 
         if (request.source() != null && request.source().ext() != null && !request.source().ext().isEmpty()) {
             final Optional<SearchExtBuilder> b = request.source()
                     .ext()
                     .stream()
-                    .filter(bldr -> PhinderParametersExtBuilder.PHINDER_PARAMETERS_NAME.equals(bldr.getWriteableName()))
+                    .filter(bldr -> SearchRedactParametersExtBuilder.SEARCH_REDACT_PARAMETERS_NAME.equals(bldr.getWriteableName()))
                     .findFirst();
             if (b.isPresent()) {
-                builder = (PhinderParametersExtBuilder) b.get();
+                builder = (SearchRedactParametersExtBuilder) b.get();
             }
         }
 
@@ -82,14 +82,14 @@ public class PhinderParameters implements Writeable, ToXContentObject {
     /**
      * Creates a new instance.
      */
-    public PhinderParameters() {}
+    public SearchRedactParameters() {}
 
     /**
      * Creates a new instance.
      * @param input The {@link StreamInput} to read parameters from.
      * @throws IOException Thrown if the parameters cannot be read.
      */
-    public PhinderParameters(StreamInput input) throws IOException {
+    public SearchRedactParameters(StreamInput input) throws IOException {
         this.policy = input.readString();
         this.context = input.readString();
         this.fieldName = input.readString();
@@ -99,7 +99,7 @@ public class PhinderParameters implements Writeable, ToXContentObject {
      * Creates a new instance.
      * @param policy The name of the policy to apply.
      */
-    public PhinderParameters(String policy) {
+    public SearchRedactParameters(String policy) {
         this.policy = policy;
     }
 
@@ -119,12 +119,12 @@ public class PhinderParameters implements Writeable, ToXContentObject {
     }
 
     /**
-     * Create the {@link PhinderParameters} from a {@link XContentParser}.
+     * Create the {@link SearchRedactParameters} from a {@link XContentParser}.
      * @param parser An {@link XContentParser}.
-     * @return The {@link PhinderParameters}.
+     * @return The {@link SearchRedactParameters}.
      * @throws IOException Thrown if the parameters cannot be read.
      */
-    public static PhinderParameters parse(XContentParser parser) throws IOException {
+    public static SearchRedactParameters parse(XContentParser parser) throws IOException {
         return PARSER.parse(parser, null);
     }
 
@@ -137,7 +137,7 @@ public class PhinderParameters implements Writeable, ToXContentObject {
             return false;
         }
 
-        final PhinderParameters other = (PhinderParameters) o;
+        final SearchRedactParameters other = (SearchRedactParameters) o;
         return Objects.equals(this.policy, other.getPolicy());
     }
 

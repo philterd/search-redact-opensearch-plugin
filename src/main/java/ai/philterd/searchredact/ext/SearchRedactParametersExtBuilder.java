@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ai.philterd.phinder.ext;
+package ai.philterd.searchredact.ext;
 
 import org.opensearch.core.common.io.stream.StreamInput;
 import org.opensearch.core.common.io.stream.StreamOutput;
@@ -25,29 +25,29 @@ import java.io.IOException;
 import java.util.Objects;
 
 /**
- * Subclass of {@link SearchExtBuilder} to access Phinder parameters.
+ * Subclass of {@link SearchExtBuilder} to access SearchRedact parameters.
  */
-public class PhinderParametersExtBuilder extends SearchExtBuilder {
+public class SearchRedactParametersExtBuilder extends SearchExtBuilder {
 
     /**
-     * The name of the "ext" section containing Phinder parameters.
+     * The name of the "ext" section containing SearchRedact parameters.
      */
-    public static final String PHINDER_PARAMETERS_NAME = "phinder";
+    public static final String SEARCH_REDACT_PARAMETERS_NAME = "search-redact";
 
-    private PhinderParameters params;
+    private SearchRedactParameters params;
 
     /**
      * Creates a new instance.
      */
-    public PhinderParametersExtBuilder() {}
+    public SearchRedactParametersExtBuilder() {}
 
     /**
      * Creates a new instance from a {@link StreamInput}.
      * @param input A {@link StreamInput} containing the parameters.
      * @throws IOException Thrown if the stream cannot be read.
      */
-    public PhinderParametersExtBuilder(StreamInput input) throws IOException {
-        this.params = new PhinderParameters(input);
+    public SearchRedactParametersExtBuilder(StreamInput input) throws IOException {
+        this.params = new SearchRedactParameters(input);
     }
 
     @Override
@@ -61,16 +61,16 @@ public class PhinderParametersExtBuilder extends SearchExtBuilder {
             return true;
         }
 
-        if (!(obj instanceof PhinderParametersExtBuilder)) {
+        if (!(obj instanceof SearchRedactParametersExtBuilder)) {
             return false;
         }
 
-        return this.params.equals(((PhinderParametersExtBuilder) obj).getParams());
+        return this.params.equals(((SearchRedactParametersExtBuilder) obj).getParams());
     }
 
     @Override
     public String getWriteableName() {
-        return PHINDER_PARAMETERS_NAME;
+        return SEARCH_REDACT_PARAMETERS_NAME;
     }
 
     @Override
@@ -84,30 +84,30 @@ public class PhinderParametersExtBuilder extends SearchExtBuilder {
     }
 
     /**
-     * Parses the phinder section of the ext block.
+     * Parses the search-redact section of the ext block.
      * @param parser A {@link XContentParser parser}.
-     * @return The {@link PhinderParameters paramers}.
-     * @throws IOException Thrown if the Phinder parameters cannot be read.
+     * @return The {@link SearchRedactParameters paramers}.
+     * @throws IOException Thrown if the SearchRedact parameters cannot be read.
      */
-    public static PhinderParametersExtBuilder parse(XContentParser parser) throws IOException {
-        final PhinderParametersExtBuilder builder = new PhinderParametersExtBuilder();
-        builder.setParams(PhinderParameters.parse(parser));
+    public static SearchRedactParametersExtBuilder parse(XContentParser parser) throws IOException {
+        final SearchRedactParametersExtBuilder builder = new SearchRedactParametersExtBuilder();
+        builder.setParams(SearchRedactParameters.parse(parser));
         return builder;
     }
 
     /**
-     * Gets the {@link PhinderParameters params}.
-     * @return The {@link PhinderParameters params}.
+     * Gets the {@link SearchRedactParameters params}.
+     * @return The {@link SearchRedactParameters params}.
      */
-    public PhinderParameters getParams() {
+    public SearchRedactParameters getParams() {
         return params;
     }
 
     /**
-     * Set the {@link PhinderParameters params}.
-     * @param params The {@link PhinderParameters params}.
+     * Set the {@link SearchRedactParameters params}.
+     * @param params The {@link SearchRedactParameters params}.
      */
-    public void setParams(PhinderParameters params) {
+    public void setParams(SearchRedactParameters params) {
         this.params = params;
     }
 

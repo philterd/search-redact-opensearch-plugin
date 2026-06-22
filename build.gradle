@@ -8,9 +8,9 @@ group = "ai.philterd"
 version = "3.2.0-SNAPSHOT"
 
 opensearchplugin {
-    name 'phinder'
-    description 'Phinder'
-    classname "ai.philterd.phinder.PhinderPlugin"
+    name 'search-redact'
+    description 'Search Redact'
+    classname "ai.philterd.searchredact.SearchRedactPlugin"
     licenseFile rootProject.file('LICENSE.txt')
     noticeFile rootProject.file('NOTICE.txt')
 }
@@ -85,7 +85,7 @@ publishing {
         pluginZip(MavenPublication) { publication ->
             artifact bundlePlugin
             pom {
-                name = "phinder-pii-opensearch-plugin"
+                name = "search-redact-opensearch-plugin"
                 description = "An OpenSearch plugin to redact PII from search results"
                 groupId = "ai.philterd"
 
@@ -109,7 +109,7 @@ publishing {
         }
         all {
             pom {
-                name = "phinder-pii-opensearch-plugin"
+                name = "search-redact-opensearch-plugin"
                 description = "An OpenSearch plugin to redact PII from search results"
             }
         }
