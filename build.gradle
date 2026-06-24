@@ -72,7 +72,7 @@ dependencies {
     // for consumers, so they are declared explicitly here (versions match the phileas POM).
     implementation 'ai.philterd:phisql:1.2.0'
     implementation 'com.networknt:json-schema-validator:1.5.5'
-    implementation 'com.googlecode.libphonenumber:libphonenumber:9.0.31'
+    implementation 'com.googlecode.libphonenumber:libphonenumber:9.0.33'
     implementation 'org.apache.httpcomponents.client5:httpclient5:5.6.1'
     implementation 'org.apache.httpcomponents.core5:httpcore5:5.4'
     implementation 'commons-collections:commons-collections:3.2.2'
