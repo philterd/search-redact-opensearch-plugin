@@ -27,6 +27,7 @@ loggerUsageCheck.enabled = false
 dependencyLicenses.enabled = false
 
 java {
+    // Java 21 to match the OpenSearch runtime the plugin is loaded into.
     targetCompatibility = JavaVersion.VERSION_21
     sourceCompatibility = JavaVersion.VERSION_21
 }
