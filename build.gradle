@@ -37,7 +37,7 @@ java {
 // loads its own bundled jars at runtime under its isolated classloader.
 configurations.all {
     resolutionStrategy {
-        force 'com.google.errorprone:error_prone_annotations:2.45.0'
+        force 'com.google.errorprone:error_prone_annotations:2.50.0'
         force 'commons-codec:commons-codec:1.22.0'
     }
 }
